@@ -197,6 +197,8 @@ canBeDismissedByUser:(BOOL)dismissingEnabled
 
     if ((self = [self init]))
     {
+        self.accessibilityIdentifier = [NSString stringWithFormat: @"TSMessageView: %@||%@",subtitle, [self typeString:aNotificationType]];
+
         _title = title;
         _subtitle = subtitle;
         _buttonTitle = buttonTitle;
@@ -311,12 +313,12 @@ canBeDismissedByUser:(BOOL)dismissingEnabled
             }
             [self.contentLabel setTextColor:contentTextColor];
             [self.contentLabel setBackgroundColor:[UIColor clearColor]];
-            CGFloat fontSize = [[current valueForKey:@"contentFontSize"] floatValue];
-            NSString *fontName = [current valueForKey:@"contentFontName"];
-            if (fontName != nil) {
-                [self.contentLabel setFont:[UIFont fontWithName:fontName size:fontSize]];
+            CGFloat contentFontSize = [[current valueForKey:@"contentFontSize"] floatValue];
+            NSString *contentFontName = [current valueForKey:@"contentFontName"];
+            if (contentFontName != nil) {
+                [self.contentLabel setFont:[UIFont fontWithName:contentFontName size:contentFontSize]];
             } else {
-                [self.contentLabel setFont:[UIFont systemFontOfSize:fontSize]];
+                [self.contentLabel setFont:[UIFont systemFontOfSize:contentFontSize]];
             }
             [self.contentLabel setShadowColor:self.titleLabel.shadowColor];
             [self.contentLabel setShadowOffset:self.titleLabel.shadowOffset];
@@ -607,6 +609,24 @@ canBeDismissedByUser:(BOOL)dismissingEnabled
     NSBundle *bundle = [NSBundle bundleForClass:[self class]];
     NSString *imagePath = [bundle pathForResource:name ofType:nil];
     return [[UIImage alloc] initWithContentsOfFile:imagePath];
+}
+
+# pragma mark - Lightspeed customisation
+
+- (NSString *)typeString:(TSMessageNotificationType)type
+{
+    switch (type) {
+        case TSMessageNotificationTypeMessage:
+            return @"INFO";
+        case TSMessageNotificationTypeSuccess:
+            return @"SUCCESS";
+        case TSMessageNotificationTypeWarning:
+            return @"WARNING";
+        case TSMessageNotificationTypeError:
+            return @"ERROR";
+    }
+
+    return @"";
 }
 
 @end
