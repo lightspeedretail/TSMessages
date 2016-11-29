@@ -232,8 +232,13 @@ __weak static UIViewController *_defaultViewController;
     }
     else
     {
+        CGRect statusBarFrame = [UIApplication sharedApplication].statusBarFrame;
+        UIView *targetView = currentView.viewController.view;
+        [targetView convertRect:targetView.bounds toView:nil];
+        BOOL isViewIsUnderStatusBar = CGRectIntersectsRect([targetView convertRect:targetView.bounds toView:nil], statusBarFrame);
+
         [currentView.viewController.view addSubview:currentView];
-        if ([TSMessage iOS7StyleEnabled]) {
+        if ([TSMessage iOS7StyleEnabled] && isViewIsUnderStatusBar) {
             addStatusBarHeightToVerticalOffset();
         }
     }
