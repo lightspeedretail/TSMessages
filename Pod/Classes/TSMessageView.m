@@ -343,9 +343,8 @@ canBeDismissedByUser:(BOOL)dismissingEnabled
         {
             _button = [UIButton buttonWithType:UIButtonTypeCustom];
 
-
+            // Background Image
             UIImage *buttonBackgroundImage = [self bundledImageNamed:[current valueForKey:@"buttonBackgroundImageName"]];
-
             buttonBackgroundImage = [buttonBackgroundImage resizableImageWithCapInsets:UIEdgeInsetsMake(15.0, 12.0, 15.0, 11.0)];
 
             if (!buttonBackgroundImage)
@@ -355,6 +354,14 @@ canBeDismissedByUser:(BOOL)dismissingEnabled
             }
 
             [self.button setBackgroundImage:buttonBackgroundImage forState:UIControlStateNormal];
+
+            // Background Hightlight Image
+            UIImage *buttonBackgroundHighlightImage = [self bundledImageNamed:[current valueForKey:@"buttonBackgroundHighlightImageName"]];
+            buttonBackgroundHighlightImage = [buttonBackgroundHighlightImage resizableImageWithCapInsets:UIEdgeInsetsMake(15.0, 12.0, 15.0, 11.0)];
+
+            [self.button setBackgroundImage:buttonBackgroundHighlightImage forState:UIControlStateHighlighted];
+
+
             [self.button setTitle:self.buttonTitle forState:UIControlStateNormal];
 
             UIColor *buttonTitleShadowColor = [UIColor colorWithHexString:[current valueForKey:@"buttonTitleShadowColor"]];
@@ -372,6 +379,15 @@ canBeDismissedByUser:(BOOL)dismissingEnabled
             }
 
             [self.button setTitleColor:buttonTitleTextColor forState:UIControlStateNormal];
+
+            UIColor *buttonTitleHighlightTextColor = [UIColor colorWithHexString:[current valueForKey:@"buttonTitleHighlightTextColor"]];
+            if (!buttonTitleHighlightTextColor)
+            {
+                buttonTitleHighlightTextColor = fontColor;
+            }
+
+            [self.button setTitleColor:buttonTitleHighlightTextColor forState:UIControlStateHighlighted];
+            
             self.button.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
             self.button.titleLabel.shadowOffset = CGSizeMake([[current valueForKey:@"buttonTitleShadowOffsetX"] floatValue],
                                                              [[current valueForKey:@"buttonTitleShadowOffsetY"] floatValue]);
