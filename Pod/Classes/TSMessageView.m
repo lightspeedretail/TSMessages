@@ -11,6 +11,8 @@
 #import "TSBlurView.h"
 #import "TSMessage.h"
 
+#import "Lightspeed-Swift.h"
+
 #define TSMessageViewMinimumPadding 15.0
 
 #define TSDesignFileName @"TSMessagesDefaultDesign"
@@ -202,6 +204,13 @@ canBeDismissedByUser:(BOOL)dismissingEnabled
         _title = title;
         _subtitle = subtitle;
         _buttonTitle = buttonTitle;
+
+#if DEBUG
+        if ([[NSProcessInfo processInfo] pos_alwaysDisplayMessagesForUITests]) {
+            duration = TSMessageNotificationDurationEndless;
+        }
+#endif
+
         _duration = duration;
         _viewController = viewController;
         _messagePosition = position;
