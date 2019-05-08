@@ -44,7 +44,7 @@
 
 
 
-typedef NS_ENUM(NSInteger, TSMessageNotificationType) {
+typedef NS_CLOSED_ENUM(NSInteger, TSMessageNotificationType) {
     TSMessageNotificationTypeMessage = 0,
     TSMessageNotificationTypeWarning,
     TSMessageNotificationTypeError,
