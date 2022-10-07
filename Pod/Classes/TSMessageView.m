@@ -404,7 +404,13 @@ canBeDismissedByUser:(BOOL)dismissingEnabled
                             action:@selector(buttonTapped:)
                   forControlEvents:UIControlEventTouchUpInside];
 
+#ifdef __IPHONE_15_0
+            UIButtonConfiguration *buttonConfiguration = [UIButtonConfiguration plainButtonConfiguration];
+            [buttonConfiguration setContentInsets: NSDirectionalEdgeInsetsMake(0.0, 5.0, 0.0, 5.0)];
+            self.button.configuration = buttonConfiguration;
+#else
             self.button.contentEdgeInsets = UIEdgeInsetsMake(0.0, 5.0, 0.0, 5.0);
+#endif
             [self.button sizeToFit];
             self.button.frame = CGRectMake(screenWidth - padding - self.button.frame.size.width,
                                            0.0,
