@@ -362,14 +362,9 @@ canBeDismissedByUser:(BOOL)dismissingEnabled
                 buttonBackgroundImage = [buttonBackgroundImage resizableImageWithCapInsets:UIEdgeInsetsMake(15.0, 12.0, 15.0, 11.0)];
             }
 
-            [self.button setBackgroundImage:buttonBackgroundImage forState:UIControlStateNormal];
-
             // Background Hightlight Image
             UIImage *buttonBackgroundHighlightImage = [self bundledImageNamed:[current valueForKey:@"buttonBackgroundHighlightImageName"]];
             buttonBackgroundHighlightImage = [buttonBackgroundHighlightImage resizableImageWithCapInsets:UIEdgeInsetsMake(15.0, 12.0, 15.0, 11.0)];
-
-            [self.button setBackgroundImage:buttonBackgroundHighlightImage forState:UIControlStateHighlighted];
-
 
             [self.button setTitle:self.buttonTitle forState:UIControlStateNormal];
 
@@ -405,10 +400,26 @@ canBeDismissedByUser:(BOOL)dismissingEnabled
                   forControlEvents:UIControlEventTouchUpInside];
 
 #ifdef __IPHONE_15_0
-            UIButtonConfiguration *buttonConfiguration = [UIButtonConfiguration plainButtonConfiguration];
-            [buttonConfiguration setContentInsets: NSDirectionalEdgeInsetsMake(0.0, 5.0, 0.0, 5.0)];
-            self.button.configuration = buttonConfiguration;
+            UIButtonConfiguration *plainButtonConfiguration = [UIButtonConfiguration plainButtonConfiguration];
+            [plainButtonConfiguration setContentInsets: NSDirectionalEdgeInsetsMake(0.0, 5.0, 0.0, 5.0)];
+            self.button.configuration = plainButtonConfiguration;
+            self.button.configurationUpdateHandler = ^(__kindof UIButton * _Nonnull button) {
+                UIButtonConfiguration *buttonConfiguration = button.configuration;
+                switch (button.state) {
+                    case UIControlStateNormal:
+                        buttonConfiguration.background.image = buttonBackgroundImage;
+                        break;
+                    case UIControlStateHighlighted:
+                        buttonConfiguration.background.image = buttonBackgroundHighlightImage;
+                        break;
+                    default:
+                        break;
+                }
+                button.configuration = buttonConfiguration;
+            };
 #else
+            [self.button setBackgroundImage:buttonBackgroundImage forState:UIControlStateNormal];
+            [self.button setBackgroundImage:buttonBackgroundHighlightImage forState:UIControlStateHighlighted];
             self.button.contentEdgeInsets = UIEdgeInsetsMake(0.0, 5.0, 0.0, 5.0);
 #endif
             [self.button sizeToFit];
